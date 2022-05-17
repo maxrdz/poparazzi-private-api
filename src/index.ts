@@ -4,4 +4,4 @@
 
     Copyright (c) 2022 Max Rodriguez
 */
-export * from './poparazzi';
+export { PoparazziClient } from './poparazzi';
