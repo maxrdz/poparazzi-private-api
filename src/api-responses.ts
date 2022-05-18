@@ -3,23 +3,26 @@
     View 'LICENSE' for the full license.
 
     Copyright (c) 2022 Max Rodriguez
+
+    Defines Poparazzi API endpoint responses.
+    Each response object defines the data that
+    is placed inside the 'data' object of an API response.
 */
-// Defines Poparazzi API endpoint responses.
 
 class ApiResponseBase {
-    type: string;
-    id?: string;
+    type: string | null;
+    id: string | null;
 
-    constructor(type: string, id?: string) {
-        this.type = type;
-        if (id) this.id = id;
+    constructor(args: {type: string, id: string | null}) {
+        this.type = args.type;
+        this.id = args.id;
     }
 }
 // poparazzi.com/api/sessions/
 export class Session extends ApiResponseBase {
     attributes: {
-        created_at: string;
-        updated_at: string;
+        created_at: string | null;
+        updated_at: string | null;
     }
     relationships: {
         user: {
@@ -27,7 +30,7 @@ export class Session extends ApiResponseBase {
         }
     }
     constructor(session_id: string, created_at: string) {
-        super("sessions", session_id);
+        super({ type: "sessions", id: session_id });
         this.attributes = {
             created_at: created_at,
             updated_at: created_at
@@ -40,31 +43,29 @@ export class Session extends ApiResponseBase {
 // poparazzi.com/api/configs/
 export class Config extends ApiResponseBase {
     attributes: {
-        is_app_update_required: boolean;
-        is_live: boolean;
-        is_uploads_enabled: boolean;
-        app_share_url: string;
-        multi_invite_text: string;
-        invite_text_body: string;
-        invite_share_view_description: string;
-        minimum_posts_hide_invite_share: number;
-        minimum_posted_hide_invite_share: number;
-        minimum_feed_hide_invite_share: number;
-        snap_username: string;
-        ig_username: string;
-        twitter_username: string;
-        default_reaction_emojis: Array<string> | [
-            "❤", "", "", "", "", "", ""
-        ];
-        delete_account_available: boolean | false;
+        is_app_update_required: boolean | null;
+        is_live: boolean | null;
+        is_uploads_enabled: boolean | null;
+        app_share_url: string | null;
+        multi_invite_text: string | null;
+        invite_text_body: string | null;
+        invite_share_view_description: string | null;
+        minimum_posts_hide_invite_share: number | null;
+        minimum_posted_hide_invite_share: number | null;
+        minimum_feed_hide_invite_share: number | null;
+        snap_username: string | null;
+        ig_username: string | null;
+        twitter_username: string | null;
+        default_reaction_emojis: Array<string> | null;
+        delete_account_available: boolean | null;
         in_app_post_message: string | null;
-        onboarding_invite_user_filter: boolean | true;
-        is_auto_follow_on: boolean | false;
-        max_name_length: number | 30;
+        onboarding_invite_user_filter: boolean | null;
+        is_auto_follow_on: boolean | null;
+        max_name_length: number | null;
     }
 
     constructor(bundle_version: string, args: {}) {
-        super("configs", bundle_version);
+        super({ type: "configs", id: bundle_version });
         // @ts-ignore
         this.attributes = {};
     }
@@ -72,26 +73,73 @@ export class Config extends ApiResponseBase {
 // poparazzi.com/api/apple_device_tokens/
 export class AppleDeviceToken extends ApiResponseBase {
     attributes: {
-        is_voip: boolean | false;
-        bundle_version: string | "3.1.20";
-        build_number: string | "826";
-        is_production: boolean | true;
-        bundle_id: string | "TTYL.Inc.Poparazzi";
-        is_invalidated: boolean | false;
+        is_voip: boolean | null;
+        bundle_version: string | null;
+        build_number: string | null;
+        is_production: boolean | null;
+        bundle_id: string | null;
+        is_invalidated: boolean | null;
     }
     constructor(device_token: string) {
-        super("apple_device_tokens", device_token);
+        super({ type: "apple_device_tokens", id: device_token });
         // @ts-ignore
         this.attributes = {};
     }
 }
+// Object not associated with an endpoint (as far as I know)
+// probably gotta get more info about this object
+class NotificationSettings extends ApiResponseBase {
+    constructor(id: string) {
+        super({ type: "notification_settings", id: id });
+    }
+}
 // poparazzi.com/api/users/
 export class User extends ApiResponseBase {
-    attributes: object;
-
-    constructor(user_id: string) {
-        super("users", user_id);
-        // @ts-ignore
-        this.attributes = {};
+    attributes?: {
+        badges: Array<any> | null; // Empty array observed, item data type unknown.
+        reactions_count: number | null;
+        posts_count: number | null;
+        posted_count: number | null;
+        views_count: number | null;
+        profile_photo_url: string | null;
+        first_name: string | null;
+        last_name: string | null;
+        username: string | null;
+        is_ghost: boolean | null;
+        is_banned: boolean | null; // 'null' observed; real data type unknown. (most likely `bool`)
+        is_private: boolean | null;
+        pop_score: number | null;
+        is_online: boolean | null;
+        created_at: string | null;
+        updated_at: string | null;
+        followers_count: number | null;
+        following_count: number | null;
+        default_create_content_permission: string | null;
+        unread_group_counts: number | null;
+        age: number | null;
+        badge_count: number | null;
+        latitude: string | null; // 'null' observed; real data type unknown. (assuming `string`)
+        longitude: string | null; // 'null' observed; real data type unknown. (assuming `string`)
+        phone_number: string | null;
+        email: string | null;
+        email_verified: boolean | null;
+        invites_sent: number | null;
+        invalidated_fields: Array<any> | null; // Empty array observed, item data type unknown.
+        ban_reason_text: string | null; // 'null' observed; real data type unknown. (assuming `string`)
+        profile_photo_upload_url: string | null;
+    }
+    relationships?: {
+        notification_settings: {
+            data: NotificationSettings;
+        }
+        school_tag: {
+            data: object | null; // 'null' observed; real data type unknown. (most likely `Object`)
+        }
+        top_poparazzi: {
+            data: Array<User>;
+        }
+    }
+    constructor(args: { user_id: string }) {
+        super({ type: "users", id: args.user_id });
     }
 }
