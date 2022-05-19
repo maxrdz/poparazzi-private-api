@@ -1,4 +1,4 @@
-<img src="poparazzi.jpg" alt="Logo copyright reserved by TTYL Inc. Poparazzi" width="50%"/>
+<img src="poparazzi.jpg" alt="Logo copyright reserved by TTYL Inc. Poparazzi" width="55%"/>
 
 # poparazzi-private-api
 
