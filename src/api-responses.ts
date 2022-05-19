@@ -25,9 +25,7 @@ export class Session extends ApiResponseBase {
         updated_at: string | null;
     }
     relationships: {
-        user: {
-            data: object | null;
-        }
+        user: { data: User | null; }
     }
     constructor(session_id: string, created_at: string) {
         super({ type: "sessions", id: session_id });
@@ -63,7 +61,6 @@ export class Config extends ApiResponseBase {
         is_auto_follow_on: boolean | null;
         max_name_length: number | null;
     }
-
     constructor(bundle_version: string, args: {}) {
         super({ type: "configs", id: bundle_version });
         // @ts-ignore
@@ -86,8 +83,10 @@ export class AppleDeviceToken extends ApiResponseBase {
         this.attributes = {};
     }
 }
-// Object not associated with an endpoint (as far as I know)
-// probably gotta get more info about this object
+/*
+ Object not associated with an endpoint (as far as I know)
+ probably gotta get more info about this object
+*/
 class NotificationSettings extends ApiResponseBase {
     constructor(id: string) {
         super({ type: "notification_settings", id: id });
@@ -129,17 +128,59 @@ export class User extends ApiResponseBase {
         profile_photo_upload_url: string | null;
     }
     relationships?: {
-        notification_settings: {
-            data: NotificationSettings;
-        }
+        notification_settings: { data: NotificationSettings; }
         school_tag: {
             data: object | null; // 'null' observed; real data type unknown. (most likely `Object`)
         }
-        top_poparazzi: {
-            data: Array<User>;
-        }
+        top_poparazzi: { data: Array<User>; }
     }
     constructor(args: { user_id: string }) {
         super({ type: "users", id: args.user_id });
+    }
+}
+// poparazzi.com/api/contents/
+export class Contents { // Doesn't have type, doesn't inherit usual base.
+    links?: {
+        next: string | null;
+    }
+    data?: Array<Content>;
+
+    constructor(args: { response_json: string }) {
+        // TODO: Parse JSON into object attributes. (very lost rn)
+    }
+}
+// 'Content' object; type "contents", part of /api/contents/ response.
+export class Content extends ApiResponseBase {
+    attributes?: {
+        reactions: Array<string> | null;
+        last_reacted_at: string | null;
+        visibility: string | null; // maybe create enum?
+        suggested_reactions: Array<string> | null;
+        remote_media_urls: Array<string> | null;
+        reaction_counts: Array<string> | null;
+        comments_count: number | null;
+        views_count: number | null;
+        is_camera_roll: boolean | null;
+        updated_at: string | null;
+        created_at: string | null;
+        uploaded_at: string | null;
+        feed_item_id: string | null;
+        is_quote: boolean | null;
+        remote_video_url: string | null; // 'null' observed; true data type unknown. (assuming `string`)
+        media_type: string | null; // maybe create enum?
+    }
+    relationships?: {
+        user: { data: User; }
+        tagged_users: { data: Array<User>; }
+        pending_tagged_users: { data: Array<User>; }
+        content_states: {
+            links: {
+                next: string;
+            }
+            data: Array<any>; // TODO: Define "content_states" API object.
+        }
+    }
+    constructor(args: { id: string }) {
+        super({ type: "contents", id: args.id });
     }
 }
