@@ -1,4 +1,4 @@
-<img src="poparazzi.jpg" alt="Logo copyright reserved by TTYL Inc. Poparazzi" width="55%"/>
+<img src="https://user-images.githubusercontent.com/33995146/169403681-6f3abfb0-10f4-4c2c-9ef4-fe7704142b58.jpg" alt="Logo is a registered trademark reserved by TTYL Inc. Poparazzi" width="55%"/>
 
 # poparazzi-private-api
 
