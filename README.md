@@ -8,5 +8,5 @@
 <br>
 
 ```
-Released under the MIT license. Copyright (c) 2022 Max Rodriguez
+Released under the GNU GPLv3 license. Copyright (c) 2022 Max Rodriguez
 ```
