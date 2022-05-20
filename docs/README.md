@@ -4,6 +4,9 @@
 Please feel free to make contributions to the documentation by submitting a pull request with your contribution.
 
 ## Table of Contents
-```
-Currently there is no documentation. Created this README.md as a placeholder for later in development.
-```
+
+- ### API Documentation
+  - `/api/sessions` - [sessions.md](api-docs/sessions.md)
+  - `/api/users` - [users.md](api-docs/users.md)
+- ### SDK Documentation
+  - Currently, I am documenting all API endpoints first.
