@@ -3,7 +3,7 @@
 Please use this template for every API endpoint documented.
 ```
 
-# https://poparazzi.com/api/<endpoint>/
+# https://poparazzi.com/api/______/
 ## HTTP Methods - `GET`, `POST`, `PATCH`
 ## Payload / Response Type - [`ResponseObject`]()
 

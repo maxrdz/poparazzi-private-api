@@ -3,10 +3,18 @@
 # SDK / API Documentation
 Please feel free to make contributions to the documentation by submitting a pull request with your contribution.
 
+### Key / Legend
+```
+⚠ - Missing more documentation
+```
+
 ## Table of Contents
 
-- ### API Documentation
-  - `/api/sessions` - [sessions.md](api-docs/sessions.md)
-  - `/api/users` - [users.md](api-docs/users.md)
 - ### SDK Documentation
   - Currently, I am documenting all API endpoints first.
+- ### API Documentation
+  - `/api/configs` - [configs.md](api-docs/configs.md)
+  - `/api/sessions` - [sessions.md](api-docs/sessions.md) ⚠
+  - `/api/apple_device_tokens` - [apple_device_tokens.md](api-docs/apple_device_tokens.md) ⚠
+  - `/api/users` - [users.md](api-docs/users.md)
+  - `/api/groups` - [groups.md](api-docs/groups.md) ⚠️

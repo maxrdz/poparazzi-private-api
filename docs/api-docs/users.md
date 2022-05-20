@@ -1,5 +1,5 @@
 # https://poparazzi.com/api/users/
-## HTTP Methods - `GET`
+## HTTP Methods - `GET`, `PATCH`
 ## Payload / Response Type - [`User`]()
 
 --------------------------------------------
@@ -50,6 +50,22 @@ When a specific user ID is queried. Example: `/api/users/<user_id>`
       "top_poparazzi": {
         "data": [ <User> array ]
       }
+    }
+  }
+}
+```
+
+### `PATCH` Payload Example
+In this example the user's profile is updated. The client can update only its own user object.
+
+Uses an extended URL to query the user's ID: `/api/users/<user_id>`
+```json
+{
+  "data": {
+    "type": "users",
+    "id": "2eed7a98-9f12-4d26-ad0f-a1f009b8e15b",
+    "attributes": {
+      "time_zone": "America\/Phoenix"
     }
   }
 }
