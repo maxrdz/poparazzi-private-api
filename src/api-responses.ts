@@ -11,31 +11,31 @@
 
 class ApiResponseBase {
     type: string | null;
-    id: string | null;
+    id?: string | null;
 
-    constructor(args: {type: string, id: string | null}) {
+    constructor(args: {type: string, id?: string}) {
         this.type = args.type;
-        this.id = args.id;
+        if (args.id) this.id = args.id;
     }
 }
 // poparazzi.com/api/sessions/
 export class Session extends ApiResponseBase {
     attributes: {
-        created_at: string | null;
-        updated_at: string | null;
+        created_at?: string;
+        updated_at?: string;
+        is_cookie_based?: boolean;
     }
-    relationships: {
+    relationships?: {
         user: { data: User | null; }
     }
-    constructor(session_id: string, created_at: string) {
-        super({ type: "sessions", id: session_id });
-        this.attributes = {
-            created_at: created_at,
-            updated_at: created_at
-        };
-        this.relationships = {
-            user: { data: null }
-        };
+    constructor(args: { new_session?: boolean }) {
+        super({ type: "sessions" });
+
+        if (args.new_session) {
+            this.attributes = { is_cookie_based: false };
+            return;
+        }
+        this.attributes = {};
     }
 }
 // poparazzi.com/api/configs/

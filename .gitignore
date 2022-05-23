@@ -1,6 +1,10 @@
+# Project Files
 .idea/
 .vscode/
 node_modules/
 npm-debug.log
 .DS_Store
 build/
+yarn-error.log
+# Program Files
+cookies.json

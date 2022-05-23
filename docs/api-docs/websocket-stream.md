@@ -75,7 +75,7 @@ The server echoes the `state`, attached with the corresponding user ID.
 ```
 
 ### Pop View Counts Event
-A short period of time after the client views 1 or more posts, it sends a `view_counts` object.
+About 5 seconds after the client views 1 or more posts, it sends a `view_counts` object.
 
 Each key in the object represents a content ID, a.k.a. a post (or pop), with a view count value.
 

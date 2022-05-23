@@ -8,10 +8,22 @@
 class ApiErrorBase {
     // @ts-ignore
     id: string | null;
-    status: string | null;
+    status?: string | null;
+    code?: string | null;
+    title?: string | null;
+    detail?: string | null;
 
-    constructor(err_status: string, id?: string) {
-        if (id) this.id = id;
-        this.status = err_status;
+    constructor(args: { id: string }) {
+        this.id = args.id;
+    }
+}
+export class NotAuthorized extends ApiErrorBase {
+    constructor(args: { id: string }) {
+
+        super({ id: args.id });
+        this.status = "401";
+        this.code = "NOT_AUTHORIZED";
+        this.title = "You are not authorized.";
+        this.detail = "You are not authorized.";
     }
 }
