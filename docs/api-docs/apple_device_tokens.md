@@ -1,5 +1,5 @@
 # https://poparazzi.com/api/apple_device_tokens/
-## HTTP Methods - `PATCH` ⚠
+## HTTP Methods - `PATCH`
 ## Payload / Response Type - [`AppleDeviceToken`]()
 
 --------------------------------------------

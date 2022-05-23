@@ -13,8 +13,9 @@ Please feel free to make contributions to the documentation by submitting a pull
 - ### SDK Documentation
   - Currently, I am documenting all API endpoints first.
 - ### API Documentation
+  - [Websocket Streaming API Events](api-docs/websocket-stream.md)
   - `/api/configs` - [configs.md](api-docs/configs.md)
-  - `/api/sessions` - [sessions.md](api-docs/sessions.md) ⚠
-  - `/api/apple_device_tokens` - [apple_device_tokens.md](api-docs/apple_device_tokens.md) ⚠
+  - `/api/sessions` - [sessions.md](api-docs/sessions.md)
+  - `/api/apple_device_tokens` - [apple_device_tokens.md](api-docs/apple_device_tokens.md)
   - `/api/users` - [users.md](api-docs/users.md)
   - `/api/groups` - [groups.md](api-docs/groups.md) ⚠️
