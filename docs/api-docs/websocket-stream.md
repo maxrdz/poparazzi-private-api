@@ -78,8 +78,6 @@ The server echoes the `state`, attached with the corresponding user ID.
 About 5 seconds after the client views 1 or more posts, it sends a `view_counts` object.
 
 Each key in the object represents a content ID, a.k.a. a post (or pop), with a view count value.
-
-**Technically, this can be heavily abused by sending a large value as a view count.**
 ```json
 {
   "view_counts": {

@@ -6,12 +6,10 @@
 */
 import * as Errors from './api-errors';
 import * as Responses from './api-responses';
-import { Headers } from 'node-fetch';
-import fetch from 'node-fetch';
 
 enum HTTP { GET = "GET", POST = "POST", PATCH = "PATCH"}
 
-export class PoparazziClient {
+export class Client {
     private readonly poparazzi_ver: string;
     private readonly cfnetwork_ver: string;
     private readonly darwin_ver: string;
@@ -36,24 +34,27 @@ export class PoparazziClient {
         if (args.language) this.request_headers.set('Accept-Language', args.language);
     }
 
-    public async create_session() {
-        const payload = { "data": {} };
-        const empty_session = new Responses.Session({ new_session: true });
-        payload.data = JSON.stringify(empty_session);
+    public async create_session(): Promise<Responses.Session> {
+        return new Promise(async (resolve, reject) => {
 
-        const response = await PoparazziClient.api_call({
-            endpoint: "sessions", headers: this.request_headers,
-            method: HTTP.POST, payload: JSON.stringify(payload)
+            const payload = {"data": {}};
+            const empty_session = new Responses.Session({ new_session: true });
+            payload.data = JSON.stringify(empty_session);
+
+            const response = await Client.api_call({
+                endpoint: "sessions", headers: this.request_headers,
+                method: HTTP.POST, payload: JSON.stringify(payload)
+            });
+            const data = await response.json();
+            if (typeof data !== typeof {}) process.exit(1); // Data returned is not an object
+
+            const new_session = new Responses.Session({});
+            Object.assign(new_session, data); // cast response data to new Session object
+
+            // Add session ID to `Authorization` request header
+            this.request_headers.set('Authorization', `Bearer ${new_session.id}`);
+            return new_session;
         });
-        const data = await response.json();
-        if (typeof data !== typeof {}) process.exit(1); // Data returned is not an object
-
-        const new_session = new Responses.Session({});
-        Object.assign(new_session, data); // cast response data to new Session object
-
-        // Add session ID to `Authorization` request header
-        this.request_headers.set('Authorization', `Bearer ${new_session.id}`);
-        return new_session;
     }
 
     public static api_call(args: {

@@ -1,20 +1,18 @@
 {
   "name": "poparazzi-private-api",
   "version": "0.1.0",
-  "description": "An implementation of the Poparazzi private Web API.",
-  "main": "index.js",
+  "description": "An open source implementation of the Poparazzi private Web API.",
+  "main": "build/index.js",
+  "types": "build/@types",
   "repository": "https://github.com/Max-Rodriguez/poparazzi-private-api.git",
   "author": "Max Rodriguez <maxrcoppola@gmail.com>",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "scripts": {
-    "build": "tsc",
-    "start": "node ./build/index.js"
+    "build": "tsc"
   },
   "dependencies": {
     "@types/node": "^17.0.35",
-    "@types/tough-cookie-file-store": "^2.0.1",
     "node-fetch": "^3.2.4",
-    "tough-cookie-file-store": "^2.0.3",
     "typescript": "^4.6.4"
   }
 }
