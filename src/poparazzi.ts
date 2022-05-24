@@ -41,14 +41,14 @@ export class Client {
 
             const payload = {"data": {}};
             const empty_session = new Responses.Session({ new_session: true });
-            payload.data = JSON.stringify(empty_session);
+            payload.data = Object.assign({}, empty_session); // cast instance to object
 
             const response = await Client.api_call({
                 endpoint: "sessions", headers: this.request_headers,
                 method: HTTP.POST, payload: JSON.stringify(payload)
             });
             const data = await response.json();
-            if (typeof data !== typeof {}) process.exit(1); // Data isn't an object, exit.
+            if (typeof data !== typeof {}) reject(); // Data isn't an object, exit.
 
             const new_session = new Responses.Session({});
             // @ts-ignore
@@ -56,7 +56,13 @@ export class Client {
 
             // Add session ID to `Authorization` request header
             this.request_headers.set('Authorization', `Bearer ${new_session.id}`);
-            return new_session;
+            resolve(new_session);
+        });
+    }
+
+    public async get_request_headers(): Promise<Headers> {
+        return new Promise((resolve, reject) => {
+            resolve(this.request_headers);
         });
     }
 
@@ -70,7 +76,7 @@ export class Client {
 
         // POST / PATCH methods
         if (args.method && args.method !== HTTP.GET) {
-            return fetch(request_url, { method: args.method, body: args.payload });
+            return fetch(request_url, { method: args.method, body: args.payload, headers: args.headers });
         }
         return fetch(request_url, { headers: args.headers });
     }

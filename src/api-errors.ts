@@ -27,3 +27,11 @@ export class NotAuthorized extends ApiErrorBase {
         this.detail = "You are not authorized.";
     }
 }
+export class Unknown extends ApiErrorBase {
+    constructor(args: { id: string }) {
+
+        super({ id: args.id });
+        this.status = "400";
+        this.code = "UNKNOWN";
+    }
+}
