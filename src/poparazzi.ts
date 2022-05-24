@@ -6,6 +6,8 @@
 */
 import * as Errors from './api-errors';
 import * as Responses from './api-responses';
+import { Headers } from "node-fetch";
+import fetch from "node-fetch";
 
 enum HTTP { GET = "GET", POST = "POST", PATCH = "PATCH"}
 
@@ -46,10 +48,11 @@ export class Client {
                 method: HTTP.POST, payload: JSON.stringify(payload)
             });
             const data = await response.json();
-            if (typeof data !== typeof {}) process.exit(1); // Data returned is not an object
+            if (typeof data !== typeof {}) process.exit(1); // Data isn't an object, exit.
 
             const new_session = new Responses.Session({});
-            Object.assign(new_session, data); // cast response data to new Session object
+            // @ts-ignore
+            Object.assign(new_session, data.data); // cast res. data "data" to Session object
 
             // Add session ID to `Authorization` request header
             this.request_headers.set('Authorization', `Bearer ${new_session.id}`);
