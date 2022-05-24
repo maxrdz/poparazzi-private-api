@@ -4,7 +4,9 @@
 node_modules/
 npm-debug.log
 .DS_Store
+# Build Files
 build/
+*.js
 yarn-error.log
 # Program Files
 cookies.json
