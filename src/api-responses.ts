@@ -24,6 +24,8 @@ export class Session extends ApiResponseBase {
         created_at?: string;
         updated_at?: string;
         is_cookie_based?: boolean;
+        phone_number?: string;
+        verification_code?: string;
     }
     relationships?: {
         user: { data: User | null; }
@@ -36,6 +38,12 @@ export class Session extends ApiResponseBase {
             return;
         }
         this.attributes = {};
+    }
+    public set_verify_code(code: string) {
+        this.attributes.verification_code = code;
+    }
+    public set_phone_number(phone: string) {
+        this.attributes.phone_number = phone;
     }
 }
 // poparazzi.com/api/configs/
