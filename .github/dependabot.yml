@@ -9,3 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "node-fetch"
+        # Ignore major version 3. (3.x+ is an ESM only module)
+        versions: ["3.x"]
