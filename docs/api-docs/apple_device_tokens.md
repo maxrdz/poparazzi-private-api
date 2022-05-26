@@ -11,7 +11,7 @@ A different API may be used for different mobile devices. (I own an Apple iPhone
 
 - When the client logs in with a new session, it is paired with the client's device token.
   - (The `AppleDeviceToken` object is sent, with an `Authorization` request header.)
-  - The `Authorization` header contains the session ID.
+  - The `Authorization` header contains a Bearer token as the session ID.
     - Content example: `Bearer 9c567d50-a2fd-4f26-a221-d71f4102136b`
 
 
@@ -19,7 +19,7 @@ A different API may be used for different mobile devices. (I own an Apple iPhone
   - (The `AppleDeviceToken` object is sent, but without the `Authorization` header.)
   - The server then responds with the `NOT_AUTHORIZED` error.
 
-NOTE: As far as I know, an Apple device token is permanent upon account creation.
+NOTE: Through some test trials, it looks like any randomly generated 64 character hexadecimal is accepted by the Poparazzi API as a valid apple device token.
 
 ### Response Example
 ```json

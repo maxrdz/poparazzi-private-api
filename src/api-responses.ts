@@ -12,10 +12,14 @@
 class ApiResponseBase {
     type: string | null;
     id?: string | null;
+    attributes?: object;
 
     constructor(args: {type: string, id?: string}) {
         this.type = args.type;
         if (args.id) this.id = args.id;
+    }
+    public set_attributes(obj: object) {
+        this.attributes = obj;
     }
 }
 // poparazzi.com/api/sessions/
@@ -78,12 +82,22 @@ export class Config extends ApiResponseBase {
 // poparazzi.com/api/apple_device_tokens/
 export class AppleDeviceToken extends ApiResponseBase {
     attributes: {
-        is_voip: boolean | null;
+        is_invalidated: boolean | null;
         bundle_version: string | null;
         build_number: string | null;
         is_production: boolean | null;
         bundle_id: string | null;
-        is_invalidated: boolean | null;
+        is_voip: boolean | null;
+        created_at?: string | null;
+        updated_at?: string | null;
+    }
+    relationships?: {
+        session: {
+            data: object | null;
+        }
+        user: {
+            data: object | null;
+        }
     }
     constructor(device_token: string) {
         super({ type: "apple_device_tokens", id: device_token });

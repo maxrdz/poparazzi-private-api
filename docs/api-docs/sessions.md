@@ -49,7 +49,7 @@ Update session info, such as when logging in. (Send phone # and verification cod
 
 Requires session id. Example: `/api/sessions/<session_id>`
 
-NOTE: Every PATCH made to a session ID includes the request header: `Device-Check`. It is a really long hash / token, which I think represents the device ID? ⚠
+Also requires the `Device-Check` header. It's a long hash, but it's not even checked. ¯\_(ツ)_/¯
 ```json
 {
   "data": {
