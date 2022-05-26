@@ -5,10 +5,10 @@
     redistribute it under certain conditions;
 */
 import * as Responses from './api-responses';
-import fetch, {Headers, Response} from "node-fetch";
+import fetch, {Headers} from "node-fetch";
 import readline from "node:readline";
 
-export enum HTTP { GET = "GET", POST = "POST", PATCH = "PATCH"}
+export enum HTTP_METHOD { GET = "GET", POST = "POST", PATCH = "PATCH"}
 export enum LOGIN_STATUS { OK = 0, INVALID = 1, SESSION_ERROR = 2, EXISTS = 3 }
 export enum CREDENTIAL_TYPE { PHONE = 0, VERIFY_CODE = 1 }
 export enum CREDENTIALS_STATUS { MISSING_SESSION = 0, INVALID = 1 }
@@ -78,6 +78,7 @@ export class Client {
                         break;
                     case LOGIN_STATUS.SESSION_ERROR:
                         console.log("\nThere was an issue while creating a new session.\n");
+                        this.session = null;
                         await this.trigger_event("login_failure");
                         break;
                     case LOGIN_STATUS.EXISTS:
@@ -90,7 +91,7 @@ export class Client {
     }
 
     public static api_call(args: {
-        endpoint: string, headers: Headers, path?: string, method?: HTTP, payload?: object
+        endpoint: string, headers: Headers, path?: string, method?: HTTP_METHOD, payload?: object
     }) {
         let request_url = `https://poparazzi.com/api/${args.endpoint}`;
         // Stringify payload object as JSON
@@ -100,7 +101,7 @@ export class Client {
         if (args.path) request_url = request_url.concat(`/${args.path}`);
 
         // POST / PATCH methods
-        if (args.method && args.method !== HTTP.GET) {
+        if (args.method && args.method !== HTTP_METHOD.GET) {
             return fetch(request_url, { method: args.method, body: payload, headers: args.headers });
         }
         return fetch(request_url, { headers: args.headers });
@@ -115,7 +116,7 @@ export class Client {
 
             const response = await Client.api_call({
                 endpoint: "sessions", headers: this.request_headers,
-                method: HTTP.POST, payload: payload
+                method: HTTP_METHOD.POST, payload: payload
             });
             const data = await response.json();
             if (typeof data !== typeof {}) reject(); // Data isn't an object, exit.
@@ -185,7 +186,7 @@ export class Client {
 
             const response = await Client.api_call({
                 endpoint: "apple_device_tokens", headers: headers_copy,
-                method: HTTP.PATCH, payload: payload,
+                method: HTTP_METHOD.PATCH, payload: payload,
                 path: `${this.device_token.id}` // add token to URL path (required)
             });
 
@@ -233,7 +234,7 @@ export class Client {
 
             const response = await Client.api_call({
                 endpoint: "sessions", headers: headers_copy,
-                method: HTTP.PATCH, payload: payload, path: `${session_copy.id}`
+                method: HTTP_METHOD.PATCH, payload: payload, path: `${session_copy.id}`
             });
             const res_data = await response.json();
             if (typeof res_data !== typeof {}) reject(); // data not valid (just in case)
