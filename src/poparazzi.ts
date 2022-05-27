@@ -5,7 +5,7 @@
     redistribute it under certain conditions;
 */
 import * as Responses from './api-responses';
-import fetch, {Headers} from "node-fetch";
+import fetch, {Headers, Response} from "node-fetch";
 import readline from "node:readline";
 
 export enum HTTP_METHOD { GET = "GET", POST = "POST", PATCH = "PATCH"}
@@ -91,8 +91,9 @@ export class Client {
     }
 
     public static api_call(args: {
-        endpoint: string, headers: Headers, path?: string, method?: HTTP_METHOD, payload?: object
-    }) {
+        endpoint: string, headers: Headers, path?: string,
+        method?: HTTP_METHOD, payload?: object }): Promise<Response> {
+
         let request_url = `https://poparazzi.com/api/${args.endpoint}`;
         // Stringify payload object as JSON
         const payload = JSON.stringify(args.payload, null, 2);
@@ -202,10 +203,10 @@ export class Client {
             resolve(this.device_token);
         });
     }
-    public generate_device_token(): Promise<Responses.AppleDeviceToken | null> {
+    public async generate_device_token(): Promise<Responses.AppleDeviceToken | null> {
         return this.send_device_token(DEVICE_TOKEN_ACTION.NEW_TOKEN);
     }
-    public end_session(): Promise<Responses.AppleDeviceToken | null> {
+    public async end_session(): Promise<Responses.AppleDeviceToken | null> {
         return this.send_device_token(DEVICE_TOKEN_ACTION.END_SESSION);
     }
 
@@ -246,11 +247,13 @@ export class Client {
         });
     }
 
-    public submit_phone_number(): Promise<Responses.Session> {
-        return this.submit_credential(this.phone_number, CREDENTIAL_TYPE.PHONE);
+    public async submit_phone_number(number?: string): Promise<Responses.Session> {
+        let phone: string;
+        if (number) phone = number; else phone = this.phone_number;
+        return this.submit_credential(phone, CREDENTIAL_TYPE.PHONE);
     }
 
-    public submit_verification_code(code: string): Promise<Responses.Session> {
+    public async submit_verification_code(code: string): Promise<Responses.Session> {
         return this.submit_credential(code, CREDENTIAL_TYPE.VERIFY_CODE);
     }
 
@@ -322,4 +325,5 @@ export class Client {
     public get_session(): Responses.Session | null { return this.session; }
     public get_device_token(): Responses.AppleDeviceToken | null { return this.device_token; }
     public reset_device_token() { this.device_token = null; }
+    public set_language(language: string) { this.request_headers.set('Accept-Language', language); }
 }
