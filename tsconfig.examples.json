@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["examples"],
+  "exclude": ["node_modules", "build", "src", "tests"],
+  "compilerOptions": {
+    "rootDir": "examples",
+    "outDir": "examples",
+    "declaration": false,
+    "declarationMap": false,
+    "declarationDir": null
+  }
+}

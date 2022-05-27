@@ -8,7 +8,8 @@
   "author": "Max Rodriguez <maxrcoppola@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc -p tsconfig.json",
+    "examples": "tsc -p tsconfig.examples.json"
   },
   "dependencies": {
     "@types/node": "^17.0.35",
