@@ -33,8 +33,10 @@ jobs:
           scope: '@Max-Rodriguez'
           always-auth: true
           
-      - name: Configure .npmrc file
-        run: echo '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}' >> .npmrc
+      - name: Configure ~/.npmrc file
+        run: |
+          echo '//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN' > ~/.npmrc
+          npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
