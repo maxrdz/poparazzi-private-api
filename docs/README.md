@@ -14,7 +14,7 @@ Please feel free to make contributions to the documentation by submitting a pull
     - [HTTP_METHOD](sdk-docs/enums/HTTP_METHOD.md)
     - [LOGIN_STATUS](sdk-docs/enums/LOGIN_STATUS.md)
     - [CREDENTIAL_TYPE](sdk-docs/enums/CREDENTIAL_TYPE.md)
-    - [CREDENTIALS_STATUS](sdk-docs/enums/CREDENTIALS_STATUS.md)
+    - [CREDENTIAL_STATUS](sdk-docs/enums/CREDENTIAL_STATUS.md)
     - [DEVICE_TOKEN_ACTION](sdk-docs/enums/DEVICE_TOKEN_ACTION.md)
   - ### Interfaces
     - [CLIENT_EVENTS](sdk-docs/interfaces/CLIENT_EVENTS.md)

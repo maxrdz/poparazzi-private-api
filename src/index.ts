@@ -6,4 +6,4 @@
 */
 export * as Errors from './api-errors';
 export * as Responses from './api-responses';
-export { Client } from './poparazzi';
+export * from './poparazzi';

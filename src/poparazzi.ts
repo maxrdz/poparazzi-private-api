@@ -11,7 +11,7 @@ import readline from "node:readline";
 export enum HTTP_METHOD { GET = "GET", POST = "POST", PATCH = "PATCH"}
 export enum LOGIN_STATUS { OK = 0, INVALID = 1, SESSION_ERROR = 2, EXISTS = 3 }
 export enum CREDENTIAL_TYPE { PHONE = 0, VERIFY_CODE = 1 }
-export enum CREDENTIALS_STATUS { MISSING_SESSION = 0, INVALID = 1 }
+export enum CREDENTIAL_STATUS { MISSING_SESSION = 0, INVALID = 1, VALID = 2 }
 export enum DEVICE_TOKEN_ACTION { NEW_TOKEN = 0, END_SESSION = 1 }
 
 export interface CLIENT_EVENTS {
@@ -66,26 +66,6 @@ export class Client {
         if (args.interactive_login === true) {
             ;(async () => {
                 const login_status = await this.interactive_login_prompt();
-
-                switch (login_status) {
-                    case LOGIN_STATUS.OK:
-                        console.log("\nPoparazzi account login success!\n");
-                        await this.trigger_event("login_success");
-                        break;
-                    case LOGIN_STATUS.INVALID:
-                        console.log("\nThe credentials given were found invalid; try again.\n");
-                        await this.trigger_event("login_failure");
-                        break;
-                    case LOGIN_STATUS.SESSION_ERROR:
-                        console.log("\nThere was an issue while creating a new session.\n");
-                        this.session = null;
-                        await this.trigger_event("login_failure");
-                        break;
-                    case LOGIN_STATUS.EXISTS:
-                        console.log("\nAn existing session already exists!\n");
-                        await this.trigger_event("login_failure");
-                        break;
-                }
             })();
         }
     }
@@ -210,10 +190,14 @@ export class Client {
         return this.send_device_token(DEVICE_TOKEN_ACTION.END_SESSION);
     }
 
-    private async submit_credential(data: string, type: CREDENTIAL_TYPE): Promise<Responses.Session> {
+    private async submit_credential(data: string, type: CREDENTIAL_TYPE): Promise<CREDENTIAL_STATUS> {
         return new Promise(async (resolve, reject) => {
+
             // Check if the client doesn't have authorization
-            if (!this.request_headers.has('Authorization')) reject(CREDENTIALS_STATUS.MISSING_SESSION);
+            if (!this.request_headers.has('Authorization')) {
+                await this.trigger_event("login_failure");
+                reject(CREDENTIAL_STATUS.MISSING_SESSION);
+            }
 
             const session_copy = new Responses.Session({});
             session_copy.id = this.session?.id; // set session ID to payload
@@ -240,20 +224,29 @@ export class Client {
             const res_data = await response.json();
             if (typeof res_data !== typeof {}) reject(); // data not valid (just in case)
 
+            if (res_data.hasOwnProperty("error")) { // server returned error
+                await this.trigger_event("login_failure");
+                reject(CREDENTIAL_STATUS.INVALID);
+            }
+
             const new_session = new Responses.Session({});
             Object.assign(new_session, res_data.data); // cast response data to new Session object
 
-            resolve(new_session); // return response
+            if (type === CREDENTIAL_TYPE.VERIFY_CODE) {
+                this.session = new_session;
+                await this.trigger_event("login_success"); // verification code validated
+            }
+            resolve(CREDENTIAL_STATUS.VALID);
         });
     }
 
-    public async submit_phone_number(number?: string): Promise<Responses.Session> {
+    public async submit_phone_number(number?: string): Promise<CREDENTIAL_STATUS> {
         let phone: string;
         if (number) phone = number; else phone = this.phone_number;
         return this.submit_credential(phone, CREDENTIAL_TYPE.PHONE);
     }
 
-    public async submit_verification_code(code: string): Promise<Responses.Session> {
+    public async submit_verification_code(code: string): Promise<CREDENTIAL_STATUS> {
         return this.submit_credential(code, CREDENTIAL_TYPE.VERIFY_CODE);
     }
 
@@ -264,7 +257,6 @@ export class Client {
 
             // Create a new Poparazzi session
             const session = await this.create_session();
-            if (session === undefined) return reject(LOGIN_STATUS.SESSION_ERROR); // session error
 
             // Generate an Apple device token
             this.device_token = await this.generate_device_token();
@@ -276,10 +268,20 @@ export class Client {
 
                 prompt.question("(Enter a 6-digit code): ", (input: string) => {
                     prompt.close();
-                    // TODO: Check if the credentials were validated and handle error.
                     ;(async () => {
-                        this.session = await this.submit_verification_code(input);
-                        resolve(LOGIN_STATUS.OK);
+                        const status = await this.submit_verification_code(input);
+
+                        switch (status) {
+                            case CREDENTIAL_STATUS.VALID:
+                                resolve(LOGIN_STATUS.OK);
+                                break;
+                            case CREDENTIAL_STATUS.INVALID:
+                                resolve(LOGIN_STATUS.INVALID);
+                                break;
+                            case CREDENTIAL_STATUS.MISSING_SESSION:
+                                resolve(LOGIN_STATUS.SESSION_ERROR);
+                                break;
+                        }
                     })();
                 });
             }

@@ -85,13 +85,13 @@
 
 ## submit_phone_number()
 
-- #### `async` submit_phone_number(number?: _[string]()_): [Promise]()<[Session]()>
+- #### `async` submit_phone_number(number?: _[string]()_): [Promise]()<[CREDENTIAL_STATUS]()>
 
 - Submits the phone number given to the Poparazzi **sessions** API endpoint. If a phone number argument is not given, by default it will use the Client's `phone_number` property.
 
 ## submit_verification_code()
 
-- #### `async` submit_verification_code(code: _[string]()_): [Promise]()<[Session]()>
+- #### `async` submit_verification_code(code: _[string]()_): [Promise]()<[CREDENTIAL_STATUS]()>
 
 - Submits the 6-digit code given to the Poparazzi **sessions** API endpoint.
 
@@ -123,9 +123,9 @@
 
 ## submit_credential()
 
-- #### `async` submit_credential(data: _[string]()_, type: _[CREDENTIAL_TYPE]()_): [Promise]()<[Session]()>
+- #### `async` submit_credential(data: _[string]()_, type: _[CREDENTIAL_TYPE]()_): [Promise]()<[CREDENTIAL_STATUS]()>
 
-- This method submits credential information to the **sessions** API endpoint.
+- This method submits the given credential to the **sessions** API endpoint.
 
 ## trigger_event()
 

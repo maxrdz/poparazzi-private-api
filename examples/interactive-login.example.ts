@@ -11,14 +11,18 @@ import * as Poparazzi from '../';
 ;(async () => {
     const client = new Poparazzi.Client({ interactive_login: true });
 
+    // Declare variables for objects returned by the client
+    let session: Poparazzi.Responses.Session | null;
+    let device_token: Poparazzi.Responses.AppleDeviceToken | null;
+
     // The code below sets callback events.
-    // The client will call back these functions when the event is triggered.
+    // The client will call these functions when their event is triggered.
 
     client.set_event({ login_success: async () => {
         console.log(`Logged into Poparazzi!`);
 
-        let session = client.get_session();
-        let device_token = client.get_device_token();
+        session = client.get_session();
+        device_token = client.get_device_token();
 
         // Logout from poparazzi
         device_token = await client.end_session();

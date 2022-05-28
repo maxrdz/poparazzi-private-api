@@ -10,31 +10,19 @@ import * as readline from "node:readline";
     // Initialize the client (enter your phone number)
     const client = new Poparazzi.Client({ phone_number: "+10000000000" });
 
-    // Create a new Poparazzi session and generate a device token (required by API)
-    let session = await client.create_session();
-    let device_token = await client.generate_device_token();
-
-    // The first step to link your session to a Poparazzi account is to verify your phone number.
-    session = await client.submit_phone_number();
+    // Declare variables for objects returned by the client
+    let session: Poparazzi.Responses.Session | null;
+    let device_token: Poparazzi.Responses.AppleDeviceToken | null;
+    let login_status: Poparazzi.CREDENTIAL_STATUS;
 
     /*
-    For simple testing purposes, the code below prompts for user input.
-    You can use the `submit_verification_code(code)` method in any way that fits your needs.
-    */
-    let pin = "";
-    const prompt = readline.createInterface({input: process.stdin, output: process.stdout});
-    prompt.question("SMS 6-digit pin: ", (x: string) => {prompt.close(); (async () => {pin = x})();});
-
-    // To complete your login, submit the verification code you received via text message.
-    session = await client.submit_verification_code(pin);
-
-    /*
-    Use `set_event()` to assign callbacks to client events.
-    See the docs for all available client events, or import the `CLIENT_EVENTS` interface.
+    Use `set_event()` to assign callback functions to client events.
+    See the docs for the `CLIENT_EVENTS` interface.
     */
     client.set_event({ login_success: async () => {
-        const session = client.get_session(); // Get updated session with user relationship
-        console.log(`Login success event triggered: \n ${session}`);
+
+        session = client.get_session(); // Get updated session with user relationship
+        console.log(`Poparazzi login success!`);
 
         // Logout from poparazzi
         device_token = await client.end_session();
@@ -47,4 +35,25 @@ import * as readline from "node:readline";
     client.set_event({ logout: async () => {
         console.log("Logged out of Poparazzi.");
     }});
+
+    // Create a new Poparazzi session & generate a device token
+    session = await client.create_session();
+    device_token = await client.generate_device_token();
+
+    // The first step to link your session to a Poparazzi account is to verify your phone number.
+    login_status = await client.submit_phone_number();
+
+    /*
+    For ease of use in this example, the code below prompts for user input.
+    You can use the `submit_verification_code(code)` method in any way that fits your needs.
+    */
+    const prompt = readline.createInterface({input: process.stdin, output: process.stdout});
+
+    prompt.question("SMS 6-digit pin: ", (code: string) => {
+        prompt.close();
+        (async () => {
+            // To complete your login, submit the verification code you received via text message.
+            login_status = await client.submit_verification_code(code);
+        })();
+    });
 })();

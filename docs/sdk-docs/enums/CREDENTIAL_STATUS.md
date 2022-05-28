@@ -8,3 +8,5 @@
   - The program tried to submit credentials before creating a session.
 - ### `INVALID` = 1
   - The credentials submitted were found invalid by the server.
+- ### `VALID` = 2
+  - The credentials submitted were validated by the server.
