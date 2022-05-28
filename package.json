@@ -4,7 +4,10 @@
   "description": "An open source implementation of the Poparazzi private Web API.",
   "main": "build/index.js",
   "types": "build/@types",
-  "repository": "https://github.com/Max-Rodriguez/poparazzi-private-api.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Max-Rodriguez/poparazzi-private-api.git"
+  },
   "author": "Max Rodriguez <maxrcoppola@gmail.com>",
   "license": "Apache-2.0",
   "scripts": {
