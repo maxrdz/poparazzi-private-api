@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-class ApiResponseBase {
+export class ApiResponseBase {
     type: string | null;
     id?: string | null;
     attributes?: object;
@@ -209,5 +209,73 @@ export class Content extends ApiResponseBase {
     }
     constructor(args: { id: string }) {
         super({ type: "contents", id: args.id });
+    }
+}
+
+// ----- Websocket Streaming API Responses ----- //
+
+export class StreamResponseBase {
+    payload: object
+    constructor() {
+        this.payload = {};
+    }
+}
+
+export class StreamAuthorization extends StreamResponseBase {
+    payload: {
+        authorization: string
+    }
+    constructor(authorization: string) {
+        super();
+        this.payload = {
+            authorization: ""
+        }
+        this.payload.authorization = authorization;
+    }
+}
+
+export class StreamState extends StreamResponseBase {
+    payload: {
+        state: {
+            active_group_id: string | null
+            is_typing: boolean | null
+        }
+    }
+    constructor() {
+        super();
+        this.payload = {
+            state: {
+                active_group_id: null,
+                is_typing: null
+            }
+        }
+    }
+    public set_active_group_id(id: string | null) {
+        this.payload.state.active_group_id = id;
+    }
+    public set_typing_status(status: boolean | null) {
+        this.payload.state.is_typing = status;
+    }
+}
+
+export class ViewCounts extends StreamResponseBase {
+    payload: {
+        view_counts: object
+    }
+    constructor(args?: { view_counts: object }) {
+        super();
+        this.payload = {
+            view_counts: {}
+        }
+        if (args && args.view_counts) {
+            this.payload.view_counts = args.view_counts;
+        }
+    }
+    public new_view_count(pop_id: string, views: number) {
+
+        let view_count = `{ "${pop_id}": ${views} }`;
+        view_count = JSON.parse(view_count);
+
+        Object.assign(this.payload.view_counts, view_count);
     }
 }

@@ -13,20 +13,25 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-import * as Responses from './api-responses';
+import * as Responses from "./api-responses";
 import fetch, {Headers, Response} from "node-fetch";
 import readline from "node:readline";
+import WebSocket from "ws";
+import {StreamResponseBase} from "./api-responses";
 
 export enum HTTP_METHOD { GET = "GET", POST = "POST", PATCH = "PATCH"}
 export enum LOGIN_STATUS { OK = 0, INVALID = 1, SESSION_ERROR = 2, EXISTS = 3 }
 export enum CREDENTIAL_TYPE { PHONE = 0, VERIFY_CODE = 1 }
 export enum CREDENTIAL_STATUS { MISSING_SESSION = 0, INVALID = 1, VALID = 2 }
 export enum DEVICE_TOKEN_ACTION { NEW_TOKEN = 0, END_SESSION = 1 }
+export enum WEBSOCKET_STATUS { OK = 0, FAILED = 1 }
 
 export interface CLIENT_EVENTS {
     login_success?: Function,
     login_failure?: Function
-    logout?: Function
+    logout?: Function,
+    websocket_connect?: Function,
+    websocket_authorized?: Function
 }
 
 export class Client {
@@ -39,6 +44,8 @@ export class Client {
     private readonly generate_random_hex: Function;
     private session: Responses.Session | null;
     private device_token: Responses.AppleDeviceToken | null;
+    private websocket: WebSocket | null;
+    private stream_authorized: boolean;
 
     constructor(args: { phone_number?: string, language?: string, interactive_login?: boolean }) {
 
@@ -49,10 +56,14 @@ export class Client {
         this.darwin_ver = "21.4.0";
         this.session = null;
         this.device_token = null;
+        this.websocket = null;
+        this.stream_authorized = false;
         this.event_callbacks = {
             login_success: async () => {},
             login_failure: async () => {},
-            logout: async () => {}
+            logout: async () => {},
+            websocket_connect: async () => {},
+            websocket_authorized: async () => {}
         };
         this.generate_random_hex = (size: number): string => {
             const result = [];
@@ -285,10 +296,10 @@ export class Client {
                                 resolve(LOGIN_STATUS.OK);
                                 break;
                             case CREDENTIAL_STATUS.INVALID:
-                                resolve(LOGIN_STATUS.INVALID);
+                                reject(LOGIN_STATUS.INVALID);
                                 break;
                             case CREDENTIAL_STATUS.MISSING_SESSION:
-                                resolve(LOGIN_STATUS.SESSION_ERROR);
+                                reject(LOGIN_STATUS.SESSION_ERROR);
                                 break;
                         }
                     })();
@@ -308,6 +319,82 @@ export class Client {
                     })();
                 });
             } else verify_prompt();
+        });
+    }
+
+    public async connect_streaming_api(args?: { auth?: boolean }): Promise<WEBSOCKET_STATUS> {
+        return new Promise(async (resolve, reject) => {
+
+            this.websocket = new WebSocket("wss://poparazzi.com/", { port: 443 });
+
+            this.websocket.on("open", () => {
+                ;(async () => {
+                    await this.trigger_event("websocket_connect");
+                })();
+
+                // If 'auth' is true AND client has a session, send authorization over stream.
+                if (args && args.auth && this.session !== null) {
+
+                    ;(async () => {
+                        // Send authentication
+                        const status = await this.authenticate_stream();
+                    })();
+                }
+                resolve(WEBSOCKET_STATUS.OK);
+            });
+
+            // Detect response type and process event data
+            this.websocket.on("message", (data: Buffer | ArrayBuffer | Array<Buffer>, isBinary: boolean) => {
+
+                const res_data = JSON.parse(`${data}`); // transform data to object
+
+                // Authentication response
+                if (res_data.authenticated) this.stream_authorized = res_data.authenticated;
+            });
+        });
+    }
+
+    public async authenticate_stream(): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+
+            // Reject if the client does not have an existing session ID.
+            if (!this.request_headers.has("Authorization")) reject(false);
+
+            const bearer_token = this.request_headers.get("Authorization");
+            // @ts-ignore  (`bearer_token` cannot be null, checked above)
+            const stream_auth = new Responses.StreamAuthorization(bearer_token);
+
+            // Send response over stream
+            const stream_status = await this.stream_send(stream_auth);
+            if (stream_status === WEBSOCKET_STATUS.FAILED) resolve(false);
+
+            // Wait for authentication (timeout after 5 seconds)
+            const timeout_seconds = 5;
+            const tries = 10;
+            const interval = (timeout_seconds / tries) * 1000
+
+            for (let i = 0; i < tries; i++) {
+                await sleep(interval);
+
+                if (this.stream_authorized) {
+                    await this.trigger_event("websocket_authorized");
+                    resolve(true);
+                    break;
+                }
+            }
+            reject(false); // auth failed
+        });
+    }
+
+    private async stream_send(response: StreamResponseBase): Promise<WEBSOCKET_STATUS> {
+        return new Promise(async (resolve, reject) => {
+            // Prepare response payload data
+            const payload = JSON.stringify(Object.assign({}, response.payload));
+
+            this.websocket?.send(payload, (err?) => {
+                if (err) resolve(WEBSOCKET_STATUS.FAILED); // websocket send failed
+            });
+            resolve(WEBSOCKET_STATUS.OK)
         });
     }
 
@@ -337,4 +424,8 @@ export class Client {
     public get_device_token(): Responses.AppleDeviceToken | null { return this.device_token; }
     public reset_device_token() { this.device_token = null; }
     public set_language(language: string) { this.request_headers.set('Accept-Language', language); }
+}
+
+function sleep(milliseconds: number) {
+    return new Promise( (resolve) => setTimeout(resolve, milliseconds) );
 }

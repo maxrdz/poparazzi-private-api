@@ -16,12 +16,15 @@ Please feel free to make contributions to the documentation by submitting a pull
     - [CREDENTIAL_TYPE](sdk-docs/enums/CREDENTIAL_TYPE.md)
     - [CREDENTIAL_STATUS](sdk-docs/enums/CREDENTIAL_STATUS.md)
     - [DEVICE_TOKEN_ACTION](sdk-docs/enums/DEVICE_TOKEN_ACTION.md)
+    - [WEBSOCKET_STATUS](sdk-docs/enums/WEBSOCKET_STATUS.md)
   - ### Interfaces
     - [CLIENT_EVENTS](sdk-docs/interfaces/CLIENT_EVENTS.md)
   - ### Classes
     - ### `Client()` - [Client.md](sdk-docs/classes/Client.md)
       - #### Public Methods (A-Z)
         - [api_call()](sdk-docs/classes/Client.md#api_call)
+        - [authenticate_stream()](sdk-docs/classes/Client.md#authenticate_stream)
+        - [connect_streaming_api()](sdk-docs/classes/Client.md#connect_streaming_api)
         - [create_session()](sdk-docs/classes/Client.md#create_session)
         - [end_session()](sdk-docs/classes/Client.md#end_session)
         - [generate_device_token()](sdk-docs/classes/Client.md#generate_device_token)
@@ -38,6 +41,7 @@ Please feel free to make contributions to the documentation by submitting a pull
         - [set_phone_number()](sdk-docs/classes/Client.md#set_phone_number)
       - #### Private Methods (A-Z)
         - [send_device_token()](sdk-docs/classes/Client.md#send_device_token)
+        - [stream_send()](sdk-docs/classes/Client.md#stream_send)
         - [submit_credential()](sdk-docs/classes/Client.md#submit_credential)
         - [trigger_event()](sdk-docs/classes/Client.md#trigger_event)
 
@@ -49,6 +53,6 @@ Please feel free to make contributions to the documentation by submitting a pull
     - `/api/apple_device_tokens` - [apple_device_tokens.md](api-docs/apple_device_tokens.md)
     - `/api/users` - [users.md](api-docs/users.md)
     - `/api/groups` - [groups.md](api-docs/groups.md) ⚠️
-- ### WSS Streaming API
-  - [Stream Authentication](api-docs/websocket-stream.md#stream-authentication) (implementing soon)
-  - [Pop View Counts Event](api-docs/websocket-stream.md#pop-view-counts-event) (implementing soon)
+- ### Websocket Streaming API
+  - [Stream Authentication](api-docs/websocket-stream.md#stream-authentication)
+  - [Pop View Counts Event](api-docs/websocket-stream.md#pop-view-counts-event)

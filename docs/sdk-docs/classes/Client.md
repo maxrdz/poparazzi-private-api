@@ -14,6 +14,8 @@
   - readonly `generate_random_hex`: **_Function_**
   - `session`: **_[Session]()_** | **_null_**
   - `device_token`: **_[AppleDeviceToken]()_** | **_null_**
+  - `websocket`: **_[WebSocket]()_** | **_null_**
+  - `stream_authorized`: **_boolean_**
 
 # Public Methods
 
@@ -28,6 +30,18 @@
 - #### `Static` api_call(args: { endpoint: _[string]()_, headers: _[Headers]()_, path?: _[string]()_, method?: _[HTTP_METHOD]()_, payload?: _[object]()_ }): [Promise]()<[Response]()>
 
 - Used by most API methods to send a request to an endpoint; can be accessed publicly.
+
+## authenticate_stream()
+
+- #### `async` authenticate_stream(): [Promise]()<_[boolean]()_>
+
+- Sends a payload with the authorization bearer token (session ID) using the Client's `Authorization` request header stored at the Client's `request_headers` [Headers]() object.
+
+## connect_streaming_api()
+
+- #### `async` connect_streaming_api(args?: { auth?: boolean }): [Promise]()<_[WEBSOCKET_STATUS]()_>
+
+- Initializes a secure websocket connection at **poparazzi.com:443**. If `auth` given is true, authenticates using the existing session object from the Client's `session` attribute object.
 
 ## create_session()
 
@@ -120,6 +134,12 @@
 - #### `async` send_device_token(arg: _[DEVICE_TOKEN_ACTION]()_): [Promise]()<[AppleDeviceToken]() | _null_>
 
 - This function is the under the hood implementation of the **apple_device_tokens** API endpoint.
+
+## stream_send()
+
+- #### `async` stream_send(response: [Object]()): [Promise]()<_[WEBSOCKET_STATUS]()_>
+
+- Sends the given response object's payload data to the Poparazzi streaming API.
 
 ## submit_credential()
 
