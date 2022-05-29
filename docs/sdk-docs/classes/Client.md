@@ -97,17 +97,11 @@
 
 - Sets the Client's `device_token` attribute to **_null_**.
 
-## submit_phone_number()
+## send_pop_view_count()
 
-- #### `async` submit_phone_number(number?: _[string]()_): [Promise]()<[CREDENTIAL_STATUS]()>
+- #### `async` send_pop_view_count(content_id: _[string]()_, views: _[number]()_): [Promise]()<[boolean]()>
 
-- Submits the phone number given to the Poparazzi **sessions** API endpoint. If a phone number argument is not given, by default it will use the Client's `phone_number` property.
-
-## submit_verification_code()
-
-- #### `async` submit_verification_code(code: _[string]()_): [Promise]()<[CREDENTIAL_STATUS]()>
-
-- Submits the 6-digit code given to the Poparazzi **sessions** API endpoint.
+- Sends a `ViewCounts` object with a single content ID over the Poparazzi Streaming API.
 
 ## set_event()
 
@@ -126,6 +120,24 @@
 - #### set_phone_number(phone: _[string]()_): _[void]()_
 
 - Sets the Client's `phone_number` attribute to the string given.
+
+## sleep()
+
+- #### `async` sleep(milliseconds: number): [Promise]()<_[any]()_>
+
+- Resolves promise after given milliseconds. Calling with `await` holds execution until the promise is resolved.
+
+## submit_phone_number()
+
+- #### `async` submit_phone_number(number?: _[string]()_): [Promise]()<[CREDENTIAL_STATUS]()>
+
+- Submits the phone number given to the Poparazzi **sessions** API endpoint. If a phone number argument is not given, by default it will use the Client's `phone_number` property.
+
+## submit_verification_code()
+
+- #### `async` submit_verification_code(code: _[string]()_): [Promise]()<[CREDENTIAL_STATUS]()>
+
+- Submits the 6-digit code given to the Poparazzi **sessions** API endpoint.
 
 # Private Methods
 

@@ -271,9 +271,9 @@ export class ViewCounts extends StreamResponseBase {
             this.payload.view_counts = args.view_counts;
         }
     }
-    public new_view_count(pop_id: string, views: number) {
+    public new_view_count(content_id: string, views: number) {
 
-        let view_count = `{ "${pop_id}": ${views} }`;
+        let view_count = `{ "${content_id}": ${views} }`;
         view_count = JSON.parse(view_count);
 
         Object.assign(this.payload.view_counts, view_count);

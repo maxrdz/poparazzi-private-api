@@ -374,9 +374,15 @@ export class Client {
             const interval = (timeout_seconds / tries) * 1000
 
             for (let i = 0; i < tries; i++) {
-                await sleep(interval);
+                await this.sleep(interval);
 
                 if (this.stream_authorized) {
+                    // send user state object
+                    const state = new Responses.StreamState();
+                    const stream_status = await this.stream_send(state);
+                    if (stream_status === WEBSOCKET_STATUS.FAILED) resolve(false);
+                    await this.sleep(500); // just a quick workaround to ensure state
+
                     await this.trigger_event("websocket_authorized");
                     resolve(true);
                     break;
@@ -386,8 +392,24 @@ export class Client {
         });
     }
 
+    public async send_pop_view_count(content_id: string, views: number): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+
+            const response = new Responses.ViewCounts();
+            response.new_view_count(content_id, views);
+
+            // Send view count to streaming API
+            const stream_status = await this.stream_send(response);
+            if (stream_status === WEBSOCKET_STATUS.FAILED) resolve(false);
+
+            resolve(true);
+        });
+    }
+
     private async stream_send(response: StreamResponseBase): Promise<WEBSOCKET_STATUS> {
         return new Promise(async (resolve, reject) => {
+            if (this.websocket === null) reject(WEBSOCKET_STATUS.FAILED); // no websocket!
+
             // Prepare response payload data
             const payload = JSON.stringify(Object.assign({}, response.payload));
 
@@ -417,6 +439,10 @@ export class Client {
         else await this.event_callbacks[event_key]();
     }
 
+    public async sleep(milliseconds: number): Promise<any> {
+        return new Promise( (resolve) => setTimeout(resolve, milliseconds) );
+    }
+
     public get_phone_number(): string { return this.phone_number; }
     public set_phone_number(phone: string) { this.phone_number = phone; }
     public get_request_headers(): Headers { return this.request_headers; }
@@ -424,8 +450,4 @@ export class Client {
     public get_device_token(): Responses.AppleDeviceToken | null { return this.device_token; }
     public reset_device_token() { this.device_token = null; }
     public set_language(language: string) { this.request_headers.set('Accept-Language', language); }
-}
-
-function sleep(milliseconds: number) {
-    return new Promise( (resolve) => setTimeout(resolve, milliseconds) );
 }
