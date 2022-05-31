@@ -123,7 +123,7 @@
 
 ## sleep()
 
-- #### `async` sleep(milliseconds: number): [Promise]()<_[any]()_>
+- #### `Static` `async` sleep(milliseconds: number): [Promise]()<_[any]()_>
 
 - Resolves promise after given milliseconds. Calling with `await` holds execution until the promise is resolved.
 

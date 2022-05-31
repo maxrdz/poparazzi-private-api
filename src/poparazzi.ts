@@ -374,14 +374,14 @@ export class Client {
             const interval = (timeout_seconds / tries) * 1000
 
             for (let i = 0; i < tries; i++) {
-                await this.sleep(interval);
+                await Client.sleep(interval);
 
                 if (this.stream_authorized) {
                     // send user state object
                     const state = new Responses.StreamState();
                     const stream_status = await this.stream_send(state);
                     if (stream_status === WEBSOCKET_STATUS.FAILED) resolve(false);
-                    await this.sleep(500); // just a quick workaround to ensure state
+                    await Client.sleep(500); // just a quick workaround to ensure state
 
                     await this.trigger_event("websocket_authorized");
                     resolve(true);
@@ -439,7 +439,7 @@ export class Client {
         else await this.event_callbacks[event_key]();
     }
 
-    public async sleep(milliseconds: number): Promise<any> {
+    public static async sleep(milliseconds: number): Promise<any> {
         return new Promise( (resolve) => setTimeout(resolve, milliseconds) );
     }
 
