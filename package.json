@@ -8,8 +8,15 @@
     "type": "git",
     "url": "https://github.com/Max-Rodriguez/poparazzi-private-api.git"
   },
+  "keywords": [
+    "poparazzi", "client", "api", "implementation", "sdk"
+  ],
   "author": "Max Rodriguez <maxrcoppola@gmail.com>",
   "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Max-Rodriguez/poparazzi-private-api/issues"
+  },
+  "homepage": "https://github.com/Max-Rodriguez/poparazzi-private-api",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "examples": "tsc -p tsconfig.examples.json"
