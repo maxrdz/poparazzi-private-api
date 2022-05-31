@@ -48,6 +48,8 @@ If you would like to implement a new feature or fix a bug, feel free to create a
 
 API and SDK documentation also make very useful contributions, so if you are good at - please do so!
 
+Before starting on your own contribution, please read [the contributor guidelines](CONTRIBUTING.md)!
+
 <br>
 
 ```
