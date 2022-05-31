@@ -1,12 +1,11 @@
-# Project Files
+# Development files
 .idea/
 .vscode/
 node_modules/
 npm-debug.log
 .DS_Store
+yarn.lock
 # Build Files
 build/
 *.js
 yarn-error.log
-# Program Files
-cookies.json

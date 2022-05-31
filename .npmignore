@@ -1,0 +1,12 @@
+# Development files
+.idea/
+.vscode/
+node_modules/
+yarn-error.log
+yarn.lock
+
+# Excluded from release
+.github/
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+examples/

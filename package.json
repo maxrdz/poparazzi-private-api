@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/Max-Rodriguez/poparazzi-private-api",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "examples": "tsc -p tsconfig.examples.json"
   },
   "dependencies": {

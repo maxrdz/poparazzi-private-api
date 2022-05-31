@@ -33,18 +33,16 @@ jobs:
           scope: '@Max-Rodriguez'
           always-auth: true
           
-      - name: Configure ~/.npmrc file
-        run: |
-          echo '//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN' > ~/.npmrc
-          npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Set registry to Github Packages
+      - name: Set publish registry to Github
         run: npm config set @Max-Rodriguez:registry https://npm.pkg.github.com
-        
+
+      - name: Install dependencies
+        run: yarn
+      - name: Build package
+        run: yarn build
+
       - name: Publish to Github Packages
-        run: npm publish
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
@@ -63,6 +61,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           scope: '@Max-Rodriguez'
           always-auth: true
+
+      - name: Install dependencies
+        run: yarn
+      - name: Build package
+        run: yarn build
           
       - name: Publish to NPM registry
         run: yarn publish
