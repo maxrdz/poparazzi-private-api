@@ -15,7 +15,9 @@
 */
 import * as Responses from "./api-responses";
 import fetch, {Headers, Response} from "node-fetch";
+// @ts-ignore
 import readline from "node:readline";
+// @ts-ignore
 import WebSocket from "ws";
 import {StreamResponseBase} from "./api-responses";
 

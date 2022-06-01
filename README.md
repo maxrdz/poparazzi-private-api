@@ -44,6 +44,11 @@ import * as Poparazzi from 'poparazzi-private-api';
 })();
 ```
 
+# Documentation
+For more detailed information on all the package features, please see the package [docs](docs/README.md).
+
+Every single enum, interface, class object and methods are fully documented there.
+
 # Contributing
 If you would like to implement a new feature or fix a bug, feel free to create a pull request!
 
