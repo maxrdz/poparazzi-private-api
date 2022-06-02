@@ -12,7 +12,6 @@ import * as readline from "node:readline";
 
     // Declare variables for objects returned by the client
     let session: Poparazzi.Responses.Session | null;
-    let device_token: Poparazzi.Responses.AppleDeviceToken | null;
     let login_status: Poparazzi.CREDENTIAL_STATUS;
 
     /*
@@ -24,8 +23,7 @@ import * as readline from "node:readline";
         session = client.get_session(); // Get updated session with user relationship
         console.log(`Poparazzi login success!`);
 
-        // Logout from poparazzi
-        device_token = await client.end_session();
+        await client.end_session(); // Logout from poparazzi
     }});
 
     client.set_event({ login_failure: async () => {
@@ -38,7 +36,7 @@ import * as readline from "node:readline";
 
     // Create a new Poparazzi session & generate a device token
     session = await client.create_session();
-    device_token = await client.generate_device_token();
+    await client.generate_device_token(); // required to log out
 
     // The first step to link your session to a Poparazzi account is to verify your phone number.
     login_status = await client.submit_phone_number();

@@ -134,7 +134,7 @@ export class Client {
         });
     }
 
-    private async send_device_token(arg: DEVICE_TOKEN_ACTION): Promise<Responses.AppleDeviceToken | null> {
+    private async send_device_token(arg: DEVICE_TOKEN_ACTION): Promise<void> {
 
         return new Promise(async (resolve, reject) => {
             let device_token_id = "";
@@ -200,15 +200,15 @@ export class Client {
                 this.device_token = null;
                 await this.trigger_event("logout"); // call logout event
             } else {
-                Object.assign(this.device_token, data.data); // cast new response data to token
+                Object.assign(this.device_token, data.data); // cast new response data to client token
             }
-            resolve(this.device_token);
+            resolve();
         });
     }
-    public async generate_device_token(): Promise<Responses.AppleDeviceToken | null> {
+    public async generate_device_token(): Promise<void> {
         return this.send_device_token(DEVICE_TOKEN_ACTION.NEW_TOKEN);
     }
-    public async end_session(): Promise<Responses.AppleDeviceToken | null> {
+    public async end_session(): Promise<void> {
         return this.send_device_token(DEVICE_TOKEN_ACTION.END_SESSION);
     }
 
@@ -281,7 +281,7 @@ export class Client {
             const session = await this.create_session();
 
             // Generate an Apple device token
-            this.device_token = await this.generate_device_token();
+            await this.generate_device_token();
 
             // Callback function to prompt input for verification code (after phone number)
             const verify_prompt = () => {

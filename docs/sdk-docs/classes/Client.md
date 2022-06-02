@@ -1,6 +1,6 @@
 # Class: `Client`
 
-#### This class serves as the Poparazzi client object, which handles all API calls.
+#### This class serves as the Poparazzi client object, which handles all Web / Streaming API calls.
 
 ## Class Properties
 
@@ -51,13 +51,13 @@
 
 ## end_session()
 
-- #### `async` end_session(): [Promise]()<[AppleDeviceToken]() | _null_>
+- #### `async` end_session(): [Promise]()<_[void]()_>
 
-- This method ends a Poparazzi session by sending its device token without authorization.
+- This method ends the session by sending a PATCH to its device token without authorization.
 
 ## generate_device_token()
 
-- #### `async` generate_device_token(): [Promise]()<[AppleDeviceToken]() | _null_>
+- #### `async` generate_device_token(): [Promise]()<_[void]()_>
 
 - Sends a randomly generated [AppleDeviceToken]() to the **apple_device_tokens** API endpoint.
 
@@ -143,7 +143,7 @@
 
 ## send_device_token()
 
-- #### `async` send_device_token(arg: _[DEVICE_TOKEN_ACTION]()_): [Promise]()<[AppleDeviceToken]() | _null_>
+- #### `async` send_device_token(arg: _[DEVICE_TOKEN_ACTION]()_): [Promise]()<_[void]()_>
 
 - This function is the under the hood implementation of the **apple_device_tokens** API endpoint.
 
