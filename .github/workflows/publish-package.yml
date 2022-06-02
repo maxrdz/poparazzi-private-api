@@ -32,9 +32,6 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@Max-Rodriguez'
           always-auth: true
-          
-      - name: Set publish registry to Github
-        run: npm config set @Max-Rodriguez:registry https://npm.pkg.github.com
 
       - name: Install dependencies
         run: yarn
@@ -42,7 +39,7 @@ jobs:
         run: yarn build
 
       - name: Publish to Github Packages
-        run: yarn publish
+        run: yarn release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
