@@ -16,8 +16,10 @@ jobs:
         run: yarn
       - name: Build source
         run: yarn build
+      - name: Build examples
+        run: yarn examples
 
-  # Publish package build to Github Packages registry
+  # Publish package build to GitHub Packages registry
   publish-gpr:
     needs: build
     runs-on: ubuntu-latest
