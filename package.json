@@ -22,7 +22,7 @@
     "examples": "tsc -p tsconfig.examples.json"
   },
   "dependencies": {
-    "@types/node": "^17.0.38",
+    "@types/node": "^17.0.39",
     "@types/node-fetch": "2",
     "@types/ws": "^8.5.3",
     "node-fetch": "2.6.7",
