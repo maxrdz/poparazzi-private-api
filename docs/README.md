@@ -3,10 +3,13 @@
 # SDK / API Documentation
 Please feel free to make contributions to the documentation by submitting a pull request with your contribution.
 
+### [Click here to jump to API documentation.](#API-Documentation)
+
 ### Key / Legend
-```
+
 ⚠ - Missing more documentation
-```
+
+![](docs-icon.png) - Read full markdown documentation
 
 ## SDK Documentation
 
@@ -20,7 +23,9 @@ Please feel free to make contributions to the documentation by submitting a pull
   - ### Interfaces
     - [CLIENT_EVENTS](sdk-docs/interfaces/CLIENT_EVENTS.md)
   - ### Classes
-    - ### `Client()` - [Client.md](sdk-docs/classes/Client.md)
+    - ### Client - [![See docs](docs-icon.png)](sdk-docs/classes/Client.md)
+      - [constructor()](sdk-docs/classes/Client.md#constructor)
+      
       - #### Public Methods (A-Z)
         - [api_call()](sdk-docs/classes/Client.md#api_call)
         - [authenticate_stream()](sdk-docs/classes/Client.md#authenticate_stream)
@@ -41,11 +46,28 @@ Please feel free to make contributions to the documentation by submitting a pull
         - [sleep()](sdk-docs/classes/Client.md#sleep)
         - [submit_phone_number()](sdk-docs/classes/Client.md#submit_phone_number)
         - [submit_verification_code()](sdk-docs/classes/Client.md#submit_verification_code)
+      
       - #### Private Methods (A-Z)
         - [send_device_token()](sdk-docs/classes/Client.md#send_device_token)
         - [stream_send()](sdk-docs/classes/Client.md#stream_send)
         - [submit_credential()](sdk-docs/classes/Client.md#submit_credential)
         - [trigger_event()](sdk-docs/classes/Client.md#trigger_event)
+
+    - ### ApiResponseBase - [![See docs](docs-icon.png)](sdk-docs/classes/ApiResponseBase.md)
+      - [constructor()](sdk-docs/classes/ApiResponseBase.md#constructor)
+      
+      - #### Public Methods (A-Z)
+        - [set_attributes()](sdk-docs/classes/ApiResponseBase.md#set_attributes)
+
+    - ### Session - [![See docs](docs-icon.png)](sdk-docs/classes/Session.md)
+      - [constructor()](sdk-docs/classes/Session.md#constructor)
+      
+      - #### Public Methods (A-Z)
+        - [set_phone_number()](sdk-docs/classes/Session.md#set_phone_number)
+        - [set_verify_code()](sdk-docs/classes/Session.md#set_verify_code)
+    
+    - ### Config - [![See docs](docs-icon.png)](sdk-docs/classes/Config.md)
+      - [constructor()](sdk-docs/classes/Config.md#constructor)
 
 ## API Documentation
 
