@@ -11,7 +11,7 @@
   "keywords": [
     "poparazzi", "client", "api", "implementation", "sdk"
   ],
-  "author": "Max Rodriguez <maxrcoppola@gmail.com>",
+  "author": "Max Rodriguez <max@max-rodriguez.com>",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/Max-Rodriguez/poparazzi-private-api/issues"
