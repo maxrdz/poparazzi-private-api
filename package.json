@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "node-fetch": "2.6.7",
-    "ws": "^8.8.0"
+    "ws": "^8.8.1"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",
