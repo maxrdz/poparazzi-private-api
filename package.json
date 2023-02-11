@@ -22,7 +22,7 @@
     "examples": "tsc -p tsconfig.examples.json"
   },
   "dependencies": {
-    "node-fetch": "2.6.8",
+    "node-fetch": "2.6.9",
     "ws": "^8.12.0"
   },
   "devDependencies": {
