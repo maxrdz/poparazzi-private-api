@@ -5,7 +5,7 @@
 ![](https://img.shields.io/discord/981056143600267285?color=blue&label=Discord&logo=Discord&logoColor=white) ![](https://img.shields.io/github/last-commit/Max-Rodriguez/poparazzi-private-api) ![](https://img.shields.io/github/issues/Max-Rodriguez/poparazzi-private-api) ![](https://img.shields.io/github/license/Max-Rodriguez/poparazzi-private-api)
 
 ### An open source implementation of the Poparazzi Web API, written in TypeScript.
-#### Join our Discord community server via this [invite link](https://discord.gg/ywvvGuBKxT).
+#### DISCLAIMER: As of April 28th 2023, the Poparazzi platform has been discontinued. The project has been archived.
 <br>
 
 # Installation
